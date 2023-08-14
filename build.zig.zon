@@ -1,0 +1,10 @@
+.{
+    .name = "weft",
+    .version = "0.0.1",
+    .dependencies = .{
+        .soundio = .{
+            .url = "https://github.com/ryleelyman/libsoundio/archive/e3956b99d5f9c5a9995b75d8f8bb5daadda0ca2a.tar.gz",
+            .hash = "1220d7712177c79eaabf54847dfd25d66b0defa81a2e90b73bf29fdda263e95591fa",
+        },
+    },
+}

@@ -1,4 +1,5 @@
 const std = @import("std");
+const soundio = @import("soundio.zig");
 
 const VERSION = .{ .major = 0, .minor = 0, .patch = 1 };
 
@@ -20,7 +21,15 @@ pub fn main() !void {
     allocator = general_allocator.allocator();
     defer _ = general_allocator.deinit();
 
+    const logger = std.log.scoped(.main);
+
     try print_version();
+
+    logger.info("init soundio", .{});
+    try soundio.init(allocator);
+    defer soundio.deinit();
+
+    soundio.run();
 
     try print_goodbye();
 }
