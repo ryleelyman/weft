@@ -1,7 +1,4 @@
-const c = @cImport({
-    @cDefine("SOUNDIO_STATIC_LIBRARY", "1");
-    @cInclude("soundio/soundio.h");
-});
+const c = @cImport(@cInclude("soundio/soundio.h"));
 const std = @import("std");
 const panic = std.debug.panic;
 
@@ -72,7 +69,9 @@ fn write_callback(
         }
         seconds_offset += seconds_per_frame * @as(f32, @floatFromInt(frame_count));
 
-        sio_err(c.soundio_outstream_end_write(maybe_outstream)) catch |err| panic("end write failed: {s}", .{@errorName(err)});
+        sio_err(
+            c.soundio_outstream_end_write(maybe_outstream),
+        ) catch |err| panic("end write failed: {s}", .{@errorName(err)});
 
         frames_left -= frame_count;
     }
@@ -87,6 +86,7 @@ var allocator: std.mem.Allocator = undefined;
 pub fn init(alloc_pointer: std.mem.Allocator) !void {
     allocator = alloc_pointer;
     soundio = c.soundio_create() orelse panic("OOM!", .{});
+    soundio.app_name = "weft";
 
     sio_err(
         c.soundio_connect(soundio),
